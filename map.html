@@ -7,13 +7,13 @@
 <script src="https://cdn.anychart.com/geodata/1.2.0/custom/world/world.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.15/proj4.js"></script>
 <div id="ac_style_samples-maps-marker-02" style="display:none;">
-  <style>
-html, body, #container {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
+<style>
+  html, body, #container {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+  }
 </style>
 </div>
 <script>(function(){
@@ -38,63 +38,45 @@ ac_add_style(".anychart-embed-samples-maps-marker-02{width:100%;height:100%;}");
 })();</script>
 <div id="container"></div>
 <script>
-anychart.onDocumentReady(function () {
-anychart.theme('lightProvence');
+  anychart.onDocumentReady(function () {
+    anychart.theme('lightProvence');
     // This sample uses 3rd party proj4 component
     // that makes it possible to set coordinates
     // for the points and labels on the map and
     // required for custom projections and grid labels formatting.
     // See https://docs.anychart.com/Maps/Map_Projections
 
-    // create the dataset of points that are defined by latitude and longtitude vulnerabilitys
-    var data = [
-{lat: -25.75, long: 122.18, name: "Loc 1", vulnerability: 10, count: 4, priority: 7},
-{lat: 34.93, long: -117.94, name: "Loc 2", vulnerability: 25,count: 6, priority: 3},
-{lat: 36.16, long: -90.13, name: "Loc 3", vulnerability: 30, count: 2, priority: 80},
-{lat: 19.78321, long: 73.99188, name: "Loc 4", vulnerability: 95, count: 4, priority: 3},
-{lat: 41.8781136, long: -87.6297982, name: "Loc 5", vulnerability: 88, count: 66, priority: 3},
-{lat: 29.7604267, long: -95.3698028, name: "Loc 6", vulnerability: 33, count: 55, priority: 3},
-{lat: 39.9525839, long: -75.1652215, name: "Loc 7", vulnerability: 56, count: 44, priority: 3},
-{lat: 33.4483771, long: -112.0740373, name: "Loc 8", vulnerability: 12, count: 12, priority: 3},
-{lat: 29.4241219, long: -98.49362819, name: "Loc 9", vulnerability: 2, count: 19, priority: 3},
-{lat: 32.715738, long: -117.1610838, name: "Loc 10", vulnerability: 99, count: 1, priority: 3},
-{lat: 32.7766642, long: -96.79698789, name: "Loc 11", vulnerability: 45, count: 133, priority: 3},
-{lat: 37.3382082, long: -121.8863286, name: "Loc 12", vulnerability: 22, count: 14, priority: 3},
-{lat: 30.267153, long: -97.7430608, name: "Loc 13", vulnerability: 55, count: 14, priority: 3},
-{lat: 48.14761995470934, long: 13.032623687500063, name: "Loc 15", vulnerability: 46, count: 15, priority: 3},
-{lat: 41.88167156059696, long: -7.226165374999937, name: "Loc 16", vulnerability: 1, count: 15, priority: 3},
-{lat: 30.121187425636837, long: 8.550201812500063, name: "Loc 17", vulnerability: 23, count: 15, priority: 3},
-{lat: 15.426998795214233, long: 28.017975250000063, name: "Loc 18", vulnerability: 33, count: 15, priority: 3},
-{lat: 32.52347683168616, long: 102.81289712500006, name: "Loc 19", vulnerability: 47, count: 15, priority: 3},
-{lat: 45.992996279659025, long: 106.10879556250006, name: "Loc 20", vulnerability: 54, count: 15, priority: 3},
-{lat: 56.495740992909425, long: 82.24649087500006, name: "Loc 21", vulnerability: 12, count: 15, priority: 3},
-{lat: 52.35869750188195, long: -93.27108724999994, name: "Loc 22", vulnerability: 23, count: 15, priority: 3},
-{lat: 62.982586993541005, long: -157.38729818749994, name: "Loc 23", vulnerability: 33, count: 15, priority: 3},
-{lat: 67.56515600776218, long: -120.69296224999994, name: "Loc 24", vulnerability: 43, count: 15, priority: 3},
-{lat: 59.25173145329533, long: -70.90292318749994, name: "Loc 25", vulnerability: 23, count: 15, priority: 3},
-{lat: 66.95364247607446, long: -39.30624349999994, name: "Loc 26", vulnerability: 11, count: 15, priority: 3},
-{lat: 50.271650612676986, long: 71.34805337500006, name: "Loc 27", vulnerability: 23, count: 15, priority: 3},
-{lat: 39.34687652019973, long: 126.85098306250006, name: "Loc 28", vulnerability: 33, count: 15, priority: 3},
-{lat: 35.86662147135729, long: 138.58438150000006, name: "Loc 29", vulnerability: 66, count: 15, priority: 3}
-//{lat: 19.947331108490932, long: -155.27792318749994, name: "Pat's Shed", vulnerability: 99, count: 15, priority: 3}
-    ];
-    var DataSet = anychart.data.set(data).mapAs();
+    // Different Maps
+    var json1 = "https://api.myjson.com/bins/c8se0";
+    var json2 = "https://api.myjson.com/bins/rjmmw";
+    var json3 = "https://api.myjson.com/bins/9swt4";
 
+    // AJAX GET Request
+    var xhReq = new XMLHttpRequest();
+    xhReq.open("GET", json1, false);
+    xhReq.send(null);
+    var jsonObject = JSON.parse(xhReq.responseText);
+
+    var clientName = jsonObject.data.clientName;
+    var buckets = jsonObject.data.buckets;
+    var dataPoints = jsonObject.data.dataPoints;
+
+    var DataSet = anychart.data.set(dataPoints).mapAs();
     var map = anychart.map();
     map.geoData(anychart.maps.world);
     map.title()
           .enabled(true)
           .useHtml(true)
           .padding([20, 0, 10, 0])
-          .text('Map Interface Prototype<br/>' +
+          .text('Spring International<br/>' +
             '<span style="color:#929292; font-size: 12px;">' +
-            'Spring International CSB</span>');
+            clientName + '</span>');
     // Creates the marker series
     //var series_lat_long = map.marker(data);
     var createSeries = function(name, data, color) {
      // sets marker series and series settings
-     var series = map.marker(data);
-     series.name(name)
+      var series = map.marker(data);
+      series.name(name)
        .fill(color)
        .stroke('2 #E1E1E1')
        .type('circle')
@@ -102,11 +84,11 @@ anychart.theme('lightProvence');
        .labels(false)
        .selectionMode('none');
 
-     series.hovered()
+      series.hovered()
        .stroke('2 #fff')
        .size(10);
 
-     series.legendItem()
+      series.legendItem()
        .iconType('circle')
        .iconFill(color)
        .iconStroke('2 #E1E1E1');
@@ -117,19 +99,19 @@ anychart.theme('lightProvence');
       //background.cornerType('roundInner');
       //background.coners(5);
       //series.tooltip.hideDelay(1000);
-   };
+    };
 
-   createSeries('0% - 10%', DataSet.filter('vulnerability', filter_function(0, 10)), '#CFB53B');
-       createSeries('10% - 20%', DataSet.filter('vulnerability', filter_function(10, 20)), '#008000');
-       createSeries('20% - 30%', DataSet.filter('vulnerability', filter_function(20, 30)), '#0000FF');
-       createSeries('30% - 40%', DataSet.filter('vulnerability', filter_function(30, 40)), '#FFFF33');
-       createSeries('40% - 50%', DataSet.filter('vulnerability', filter_function(40,50)), '	#FFA500');
-       createSeries('50% - 100%', DataSet.filter('vulnerability', filter_function(50,100)), '#FF0000');
+   var i;
+   for (i=0; i<buckets.length; i++) {
+     var bucket = buckets[i];
+     createSeries(bucket.name, DataSet.filter('vulnerability', filter_function(bucket.from, bucket.to)), bucket.color);
+   }
 
-       map.tooltip().title().fontColor('#fff');
-       map.tooltip().titleFormat(function() {
-         return this.getData('date')
-       });
+
+   map.tooltip().title().fontColor('#fff');
+   map.tooltip().titleFormat(function() {
+     return this.getData('date')
+   });
 
     // format the tooltips of the lat_long series
   //  series_lat_long.tooltip().titleFormat("{%name}");
