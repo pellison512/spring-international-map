@@ -172,7 +172,7 @@ ac_add_style(".anychart-embed-samples-maps-marker-02{width:100%;height:100%;}");
 
 
     var clicked = true;
-    map.listen("click", function(evt) {
+    map.listen("dblclick", function(evt) {
         if (clicked) {
             map.zoomTo(3, evt.clientX, evt.clientY);
         }
