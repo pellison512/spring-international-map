@@ -116,24 +116,36 @@ worldSeries = map.choropleth(dataSetWorld);
 
 
   var dataSetWorld = [
-      {'id': 'US', 'value':5}
+      {'id': 'US', 'value':5, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/countries/united_states_of_america/united_states_of_america.json'}
     ];
 
 var dataSetUS = [
     {'id': 'US.TX', 'value': 26956958}
 ];
 
+var dataSets = {
+  'US': dataSetUS,
+}
+
 
 map.geoData(anychart.maps.world);
 
 worldSeries = map.choropleth(dataSetWorld);
-    
-anychart.data.loadJsonFile("https://cdn.anychart.com/releases/8.4.0/geodata/countries/united_states_of_america/united_states_of_america.json", function(data){
-      var usMap = anychart.map();
-      usMap.geoData(data);
-      usSeries = usMap.choropleth(dataSetUS);
-      map.drillTo('US', usMap);
+
+worldSeries.listen('pointClick', function(e){
+  loadMap(e.point.get('id'), e.point.get('url'), map);
+});
+
+function loadMap(id, url, map){
+  anychart.data.loadJsonFile(url, function(data){
+      var drillMap = anychart.map();
+      drillMap.geoData(data);
+      drillSeries = drillMap.choropleth(drillMap.choropleth(dataSets[id]));
+      map.drillTo(id, drillMap);
     });
+}
+    
+
     
 
     
