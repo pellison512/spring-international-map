@@ -71,60 +71,75 @@ ac_add_style(".anychart-embed-samples-maps-marker-02{width:100%;height:100%;}");
     var DataSet = anychart.data.set(dataPoints).mapAs();
     var map = anychart.map();
 
-
-/////----------------------------US DrillDown----------------/////////
-    
-/*
-    var dataSetUS = [
-      {'id':'US.TX', 'value':6222},
-    ]
-
- var dataSetWorld = [
-      {'id': 'US', 'value':5}
-    ];
-
-    worldSeries = map.choropleth(dataSetWorld);
-
-    
-
-
-------------------------------------
-
-
-  var dataSetWorld = [
-      {'id': 'US', 'value':5}
-    ];
-
-var dataSetUS = [
-    {"id": "US.TX", "value": 26956958}
-];
-
-worldSeries = map.choropleth(dataSetWorld);
-
-    var usMap = anychart.map();
-
-    usMap.geoData(anychart.maps.united_states_of_america);
-
-    anychart.data.loadJsonFile("https://cdn.anychart.com/geodata/1.2.0/countries/united_states_of_america/united_states_of_america.js", function(data){
-      var usMap = anychart.map();
-      usMap.geoData(data);
-      usSeries = usMap.choropleth(dataSetUS);
-      map.drillTo('US', usMap);
-    });
-*/
-
-
-
   var dataSetWorld = [
       {'id': 'US', 'value':5, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/countries/united_states_of_america/united_states_of_america.json'}
     ];
 
 var dataSetUS = [
-    {'id': 'US.TX', 'value': 26956958}
+    {'id': 'US.TX', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/texas/texas.json'},
+    
+    {'id': 'US.AL', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/alabama/alabama.json'},
+    {'id': 'US.AR', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/arkansas/arkansas.json'},
+    {'id': 'US.AZ', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/arizona/arizona.json'},
+    {'id': 'US.AK', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/alaska/alaska.json'},
+    {'id': 'US.CA', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/california/california.json'},
+    {'id': 'US.CO', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/colorado/colorado.json'},
+    {'id': 'US.CT', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/connecticut/connecticut.json'},
+    {'id': 'US.DE', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/delaware/delaware.json'},
+    {'id': 'US.FL', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/florida/florida.json'},
+    {'id': 'US.GA', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/georgia/georgia.json'},
+    {'id': 'US.HI', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/hawaii/hawaii.json'},
+    {'id': 'US.ID', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/idaho/idaho.json'},
+    {'id': 'US.IL', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/illinois/illinois.json'},
+    {'id': 'US.IN', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/indiana/indiana.json'},
+    {'id': 'US.IA', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/iowa/iowa.json'},
+    {'id': 'US.KS', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/kansas/kansas.json'},
+    {'id': 'US.KY', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/kentucky/kentucky.json'},
+    {'id': 'US.LA', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/louisiana/louisiana.json'},
+    {'id': 'US.ME', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/maine/maine.json'},
+    {'id': 'US.MD', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/maryland/maryland.json'},
+    {'id': 'US.MA', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/massachusetts/massachusetts.json'},
+    {'id': 'US.MO', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/missouri/missouri.json'},
+    {'id': 'US.MN', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/minnesota/minnesota.json'},
+    {'id': 'US.MS', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/mississippi/mississippi.json'},
+    {'id': 'US.MI', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/michigan/michigan.json'},
+    {'id': 'US.MT', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/montana/montana.json'},
+    {'id': 'US.NV', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/nevada/nevada.json'},
+    {'id': 'US.NE', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/nebraska/nebraska.json'},
+    {'id': 'US.NH', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/new_hampshire/new_hampshire.json'},
+    {'id': 'US.NJ', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/new_jersey/new_jersey.json'},
+    {'id': 'US.NM', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/new_mexico/new_mexico.json'},
+    {'id': 'US.NY', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/new_york/new_york.json'},
+    {'id': 'US.NC', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/north_carolina/north_carolina.json'},
+    {'id': 'US.ND', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/north_dakota/north_dakota.json'},
+    {'id': 'US.OH', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/ohio/ohio.json'},
+    {'id': 'US.OK', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/oklahoma/oklahoma.json'},
+    {'id': 'US.OR', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/oregon/oregon.json'},
+    {'id': 'US.PA', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/pennsylvania/pennsylvania.json'},
+    {'id': 'US.RI', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/rhode_island/rhode_island.json'},
+    {'id': 'US.SC', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/south_carolina/south_carolina.json'},
+    {'id': 'US.SD', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/south_dakota/south_dakota.json'},
+    {'id': 'US.TN', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/tennessee/tennessee.json'},
+    {'id': 'US.UT', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/utah/utah.json'},
+    {'id': 'US.VT', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/vermont/vermont.json'},
+    {'id': 'US.VA', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/virginia/virginia.json'},
+    {'id': 'US.WA', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/washington/washington.json'},
+    {'id': 'US.WV', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/west_virginia/west_virginia.json'},
+    {'id': 'US.WI', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/wisconsin/wisconsin.json'},
+    {'id': 'US.WY', 'value': 26956958, 'url':'https://cdn.anychart.com/releases/8.4.0/geodata/usa_states/wyoming/wyoming.json'},
+];
+
+var dataSetTX = [
+    {'id': 'US.TX.111', 'value': 6222},
+    {'id': 'US.TX.421', 'value': 3186},
+    {'id': 'US.TX.195', 'value': 5369},
+    {'id': 'US.TX.357', 'value': 9006}, 
+    {'id': 'US.TX.295', 'value': 3057},
 ];
 
 var dataSets = {
   'US': dataSetUS,
+  'US.TX': dataSetTX,
 }
 
 
@@ -140,7 +155,12 @@ function loadMap(id, url, map){
   anychart.data.loadJsonFile(url, function(data){
       var drillMap = anychart.map();
       drillMap.geoData(data);
-      drillSeries = drillMap.choropleth(drillMap.choropleth(dataSets[id]));
+      drillSeries = drillMap.choropleth(dataSets[id]);
+      console.log(id);
+      drillSeries.listen('pointClick', function(e){
+        console.log('here in pointclick listener');
+        loadMap(e.point.get('id'), e.point.get('url'), map);
+      });
       map.drillTo(id, drillMap);
     });
 }
