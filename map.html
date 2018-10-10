@@ -45,173 +45,163 @@ ac_add_style(".anychart-embed-samples-maps-marker-02{width:100%;height:100%;}");
 
 <script>
 
+	var geocoder = new google.maps.Geocoder();
+	geocode = function(address, f) {
+	      geocoder.geocode({'address': address}, function(results, status) {
+	      if (status === 'OK') {
+	        f(results[0].geometry.location);
+	      } else {
+	        alert('Geocode was not successful for the following reason: ' + status);
+	      }
+	    });
+	}
 
-  var geocoder = new google.maps.Geocoder();
-  function geocode(address) {
+  	anychart.onDocumentReady(function () {
 
-    geocoder.geocode({'address': address}, function(results, status) {
-      if (status === 'OK') {
-        console.log("Results" + results[0].geometry.location);
-
-        //geocodedLocation = results[0].geometry.location;
-      } else {
-        alert('Geocode was not successful for the following reason: ' + status);
-      }
-    });
-  }
-
-
-  anychart.onDocumentReady(function () {
-
-    var address = "5 Magnolia Place, Rye NY";
-    geocode(address);
+	    var address = "5 Magnolia Place, Rye NY";
+	    geocode(address, function(geocodedLocation) {
+		    console.log("geocodedLocation: " + geocodedLocation);
+	    });
 
 
+  		anychart.theme('lightProvence');
+
+	    // Different Maps
+	    var json1 = "https://api.myjson.com/bins/c8se0";
+	    var json2 = "https://api.myjson.com/bins/rjmmw";
+	    var json3 = "https://api.myjson.com/bins/9swt4";
+	    var json4 = "https://api.myjson.com/bins/127yfs";
+	    var json5 = "https://api.myjson.com/bins/wv1zs";
+	    var json6 = "https://api.myjson.com/bins/e86rc"; // about 2,000 points in same location
+
+	    // AJAX GET Request
+	    var xhReq = new XMLHttpRequest();
+	    xhReq.open("GET", json4, false);
+	    xhReq.send(null);
+	    var jsonObject = JSON.parse(xhReq.responseText);
+
+	    var clientName = jsonObject.data.clientName;
+	    var buckets = jsonObject.data.buckets;
+	    var dataPoints = jsonObject.data.dataPoints;
+
+	    var DataSet = anychart.data.set(dataPoints).mapAs();
+	    var map = anychart.map();
+	    map.geoData(anychart.maps.world);
+	    map.title()
+	          .enabled(true)
+	          .useHtml(true)
+	          .padding([20, 0, 10, 0])
+	          .text('Spring International<br/>' +
+	            '<span style="color:#929292; font-size: 12px;">' +
+	            clientName + '</span>');
+	    // Creates the marker series
+	    //var series_lat_long = map.marker(data);
+	    var createSeries = function(name, data, color) {
+	     // sets marker series and series settings
+	      var series = map.marker(data);
+	      series.name(name)
+	       .fill(color)
+	       .stroke('2 #E1E1E1')
+	       .type('circle')
+	       .size(5)
+	       .labels(false)
+	       .selectionMode('none');
+
+	      series.hovered()
+	       .stroke('2 #fff')
+	       .size(10);
+
+	      series.legendItem()
+	       .iconType('circle')
+	       .iconFill(color)
+	       .iconStroke('2 #E1E1E1');
+
+	      var background = series.tooltip().background();
+	      background.fill(anychart.color.lighten(color, 0.7));
+	      //background.stroke('#888');
+	      //background.cornerType('roundInner');
+	      //background.coners(5);
+	      //series.tooltip.hideDelay(1000);
+	    };
+
+	   for (var i=0; i<buckets.length; i++) {
+	     var bucket = buckets[i];
+	     createSeries(bucket.name, DataSet.filter('vulnerability', filter_function(bucket.from, bucket.to)), bucket.color);
+	   }
 
 
-    anychart.theme('lightProvence');
-    // This sample uses 3rd party proj4 component
-    // that makes it possible to set coordinates
-    // for the points and labels on the map and
-    // required for custom projections and grid labels formatting.
-    // See https://docs.anychart.com/Maps/Map_Projections
+	   map.tooltip().title().fontColor('#fff');
+	   map.tooltip().titleFormat(function() {
+	     return this.getData('date')
+	   });
 
-    // Different Maps
-    var json1 = "https://api.myjson.com/bins/c8se0";
-    var json2 = "https://api.myjson.com/bins/rjmmw";
-    var json3 = "https://api.myjson.com/bins/9swt4";
-    var json4 = "https://api.myjson.com/bins/127yfs";
-    var json5 = "https://api.myjson.com/bins/wv1zs";
-    var json6 = "https://api.myjson.com/bins/e86rc"; // about 2,000 points in same location
+	    // format the tooltips of the lat_long series
+	  //  series_lat_long.tooltip().titleFormat("{%name}");
+	    //series_lat_long.tooltip().format("Vulnerability: {%vulnerability}");
+	    map.tooltip()
+	    .useHtml(true)
+	    .padding([8, 13, 10, 13])
+	    .width(350)
+	    .fontSize(12)
+	    .fontColor('#000000')
+	    .format(function() {
 
-    // AJAX GET Request
-    var xhReq = new XMLHttpRequest();
-    xhReq.open("GET", json4, false);
-    xhReq.send(null);
-    var jsonObject = JSON.parse(xhReq.responseText);
-
-    var clientName = jsonObject.data.clientName;
-    var buckets = jsonObject.data.buckets;
-    var dataPoints = jsonObject.data.dataPoints;
-
-    var DataSet = anychart.data.set(dataPoints).mapAs();
-    var map = anychart.map();
-    map.geoData(anychart.maps.world);
-    map.title()
-          .enabled(true)
-          .useHtml(true)
-          .padding([20, 0, 10, 0])
-          .text('Spring International<br/>' +
-            '<span style="color:#929292; font-size: 12px;">' +
-            clientName + '</span>');
-    // Creates the marker series
-    //var series_lat_long = map.marker(data);
-    var createSeries = function(name, data, color) {
-     // sets marker series and series settings
-      var series = map.marker(data);
-      series.name(name)
-       .fill(color)
-       .stroke('2 #E1E1E1')
-       .type('circle')
-       .size(5)
-       .labels(false)
-       .selectionMode('none');
-
-      series.hovered()
-       .stroke('2 #fff')
-       .size(10);
-
-      series.legendItem()
-       .iconType('circle')
-       .iconFill(color)
-       .iconStroke('2 #E1E1E1');
-
-      var background = series.tooltip().background();
-      background.fill(anychart.color.lighten(color, 0.7));
-      //background.stroke('#888');
-      //background.cornerType('roundInner');
-      //background.coners(5);
-      //series.tooltip.hideDelay(1000);
-    };
-
-   for (var i=0; i<buckets.length; i++) {
-     var bucket = buckets[i];
-     createSeries(bucket.name, DataSet.filter('vulnerability', filter_function(bucket.from, bucket.to)), bucket.color);
-   }
+	    return '<span style="font-size: 13px"><span style="color: #000000">Vulnerability: ' + '</span>' + this.getData('vulnerability') + '%<br/>' +
+	    '<span style="color: #000000">Place: ' + '</span>' + this.getData('name') + '<br/>' +
+	    '<span style="color: #000000">Count: ' + '</span>' + this.getData('count') + '</span>';
+	    });
+	  //  map.title("Marker series defined by latitude and longitude");
+	    map.legend(true);
+	    var zoomController = anychart.ui.zoom();
+	    zoomController.render(map);
+	    map.container("container");
+	    map.draw();
 
 
-   map.tooltip().title().fontColor('#fff');
-   map.tooltip().titleFormat(function() {
-     return this.getData('date')
-   });
+	    /* Finding starting zoom level */
+	    var xAvg = 0;
+	    var yAvg = 0;
+	    for(var i = 0; i < dataPoints.length; i++) {
+	      var coords = map.transform(dataPoints[i].long, dataPoints[i].lat);
+	      xAvg += coords.x;
+	      yAvg += coords.y;
+	    }
+	    xAvg = xAvg / dataPoints.length;
+	    yAvg = yAvg / dataPoints.length;
+	    console.log("xAvg: " + xAvg);
+	    console.log("yAvg: " + yAvg);
 
-    // format the tooltips of the lat_long series
-  //  series_lat_long.tooltip().titleFormat("{%name}");
-    //series_lat_long.tooltip().format("Vulnerability: {%vulnerability}");
-    map.tooltip()
-    .useHtml(true)
-    .padding([8, 13, 10, 13])
-    .width(350)
-    .fontSize(12)
-    .fontColor('#000000')
-    .format(function() {
+	    var xStdDev = 0;
+	    var yStdDev = 0;
+	    for (var i=0; i < dataPoints.length; i++) {
+	      var coords = map.transform(dataPoints[i].long, dataPoints[i].lat);
+	      xStdDev += Math.pow(coords.x - xAvg, 2);
+	      yStdDev += Math.pow(coords.y - yAvg, 2);
+	    }
+	    xStdDev = Math.sqrt(xStdDev / dataPoints.length);
+	    yStdDev = Math.sqrt(yStdDev / dataPoints.length);
+	    console.log("xStdDev: " + xStdDev);
+	    console.log("yStdDev: " + yStdDev);
+	    var avgStdDev = (xStdDev + yStdDev) / 2;
+	    console.log("avgStdDev: " + avgStdDev);
 
-    return '<span style="font-size: 13px"><span style="color: #000000">Vulnerability: ' + '</span>' + this.getData('vulnerability') + '%<br/>' +
-    '<span style="color: #000000">Place: ' + '</span>' + this.getData('name') + '<br/>' +
-    '<span style="color: #000000">Count: ' + '</span>' + this.getData('count') + '</span>';
-    });
-  //  map.title("Marker series defined by latitude and longitude");
-    map.legend(true);
-    var zoomController = anychart.ui.zoom();
-    zoomController.render(map);
-    map.container("container");
-    map.draw();
+	    var zoomLevel = -(Math.log(avgStdDev/3) / Math.log(1.4)) + 11;
+	    console.log("zoomLevel: " + zoomLevel);
 
-
-    /* Finding starting zoom level */
-    var xAvg = 0;
-    var yAvg = 0;
-    for(var i = 0; i < dataPoints.length; i++) {
-      var coords = map.transform(dataPoints[i].long, dataPoints[i].lat);
-      xAvg += coords.x;
-      yAvg += coords.y;
-    }
-    xAvg = xAvg / dataPoints.length;
-    yAvg = yAvg / dataPoints.length;
-    console.log("xAvg: " + xAvg);
-    console.log("yAvg: " + yAvg);
-
-    var xStdDev = 0;
-    var yStdDev = 0;
-    for (var i=0; i < dataPoints.length; i++) {
-      var coords = map.transform(dataPoints[i].long, dataPoints[i].lat);
-      xStdDev += Math.pow(coords.x - xAvg, 2);
-      yStdDev += Math.pow(coords.y - yAvg, 2);
-    }
-    xStdDev = Math.sqrt(xStdDev / dataPoints.length);
-    yStdDev = Math.sqrt(yStdDev / dataPoints.length);
-    console.log("xStdDev: " + xStdDev);
-    console.log("yStdDev: " + yStdDev);
-    var avgStdDev = (xStdDev + yStdDev) / 2;
-    console.log("avgStdDev: " + avgStdDev);
-
-    var zoomLevel = -(Math.log(avgStdDev/3) / Math.log(1.4)) + 11;
-    console.log("zoomLevel: " + zoomLevel);
-
-    map.zoom(zoomLevel, xAvg, yAvg);
+	    map.zoom(zoomLevel, xAvg, yAvg);
 
 
-    var clicked = true;
-    map.listen("dblclick", function(evt) {
-        if (clicked) {
-            map.zoomTo(3, evt.clientX, evt.clientY);
-        }
-        else {
-            map.zoomTo(0, evt.clientX, evt.clientY);
-        }
-    clicked = !clicked;
-  });
-  map.interactivity().zoomOnMouseWheel(true);
+	    var clicked = true;
+	    map.listen("dblclick", function(evt) {
+	        if (clicked) {
+	            map.zoomTo(3, evt.clientX, evt.clientY);
+	        }
+	        else {
+	            map.zoomTo(0, evt.clientX, evt.clientY);
+	        }
+	    clicked = !clicked;
+	  });
+	  map.interactivity().zoomOnMouseWheel(true);
 
 });
 
