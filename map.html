@@ -156,7 +156,36 @@ function loadMap(id, url, map){
       var drillMap = anychart.map();
       drillMap.geoData(data);
       drillSeries = drillMap.choropleth(dataSets[id]);
-      console.log(id);
+      //secondSeries = drillMap.marker(DataSet);
+
+      for(var i=0; i<buckets.length; i++){
+        var bucket = buckets[i];
+        
+        var data = DataSet.filter('vulnerability', filter_function(bucket.from, bucket.to));
+        var color = bucket.color;
+        var secondSeries = drillMap.marker(data);
+        secondSeries.name(bucket.name)
+          .fill(color)
+          .stroke('2 #E1E1E1')
+          .type('circle')
+          .size(5)
+          .labels(false)
+          .selectionMode('none');
+
+          secondSeries.hovered()
+       .stroke('2 #fff')
+       .size(10);
+
+      secondSeries.legendItem()
+       .iconType('circle')
+       .iconFill(color)
+       .iconStroke('2 #E1E1E1');
+
+      var background = secondSeries.tooltip().background();
+      background.fill(anychart.color.lighten(color, 0.7));
+
+      }
+
       drillSeries.listen('pointClick', function(e){
         console.log('here in pointclick listener');
         loadMap(e.point.get('id'), e.point.get('url'), map);
