@@ -195,6 +195,7 @@ function loadMap(id, url, map){
       document.getElementById('zoomOut').style.display= "block";
 document.getElementById('zoomOut').onclick = function(e){
   drillMap.drillUp();
+  document.getElementById('zoomOut').style.display = "none";
 }
 
       }
